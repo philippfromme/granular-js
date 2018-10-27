@@ -1,0 +1,1 @@
+export { Granular as default } from "./src/Granular";

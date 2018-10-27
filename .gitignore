@@ -1,0 +1,5 @@
+dist
+example/dist/*
+!example/dist/example.wav
+node_modules
+example/node_modules

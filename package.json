@@ -1,0 +1,11 @@
+{
+  "name": "granular-js",
+  "version": "0.0.0",
+  "description": "Granular synthesis library",
+  "main": "index.js",
+  "author": "Philipp Fromme",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
+}

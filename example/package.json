@@ -1,0 +1,21 @@
+{
+  "name": "granular-js-example",
+  "version": "0.0.0",
+  "description": "Granular synthesis library example",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html --no-cache --no-source-maps --open"
+  },
+  "browserslist": [
+    "last 1 Chrome version",
+    "Firefox ESR",
+    "last 1 safari version",
+    "last 1 opera version",
+    "last 1 edge version"
+  ],
+  "author": "Philipp Fromme",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel-bundler": "^1.10.3"
+  }
+}
