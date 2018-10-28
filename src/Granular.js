@@ -224,8 +224,7 @@ export default class Granular {
     gain.connect(this.gain);
 
     // update position and calcuate offset
-    // duration is double representing duration in seconds
-    const offset = position * (this.buffer.duration / 1000);
+    const offset = map(position, 0, 1, 0, this.buffer.duration);
 
     // volume
     volume = clamp(volume, 0, 1);
