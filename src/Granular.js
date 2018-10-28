@@ -1,4 +1,5 @@
 import {
+  find,
   merge
 } from 'lodash';
 
@@ -84,6 +85,10 @@ export default class Granular {
         resolve();
       });
     });
+  }
+
+  getVoice(id) {
+    return find(this.state.voices, voice => voice.id === id);
   }
 
   /**
