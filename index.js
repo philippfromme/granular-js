@@ -1,1 +1,3 @@
-export { Granular as default } from "./src/Granular";
+import Granular from './src/Granular';
+
+export default Granular;
