@@ -1,6 +1,6 @@
 {
   "name": "granular-js",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Granular synthesis library",
   "main": "index.js",
   "author": "Philipp Fromme",
