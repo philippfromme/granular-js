@@ -14,11 +14,11 @@ export default class Granular {
 
     const initialState = {
       envelope: {
-        attack: Math.floor((Math.random() * 0.8) * 10) / 10 + 0.1,
-        release: Math.floor((Math.random() * 0.8) * 10) / 10 + 0.1
+        attack: random(0.1, 0.9),
+        release: random(0.1, 0.9)
       },
-      density: Math.floor((Math.random() * 0.8) * 10) / 10 + 0.1,
-      spread: Math.floor((Math.random() * 0.8) * 10) / 10 + 0.1,
+      density: random(0.1, 0.9),
+      spread: random(0.1, 0.9),
       pitch: 1
     };
 
@@ -57,16 +57,12 @@ export default class Granular {
     this.events.off(events, listener);
   }
 
-  set(property, value) {
-    // TODO: implement
-  }
-
-  _setState(state) {
+  set(state) {
     this.state = merge(this.state, state);
   }
 
   setBuffer(data) {
-    this._setState({ isBufferSet: false });
+    this.set({ isBufferSet: false });
 
     this.events.fire('settingBuffer', {
       buffer: data
@@ -76,7 +72,7 @@ export default class Granular {
       this.context.decodeAudioData(data, buffer => {
         this.buffer = buffer;
   
-        this._setState({ isBufferSet: true });
+        this.set({ isBufferSet: true });
   
         this.events.fire('bufferSet', {
           buffer
@@ -205,7 +201,7 @@ export default class Granular {
 
     const voices = this.state.voices.filter(v => v.id !== id);
 
-    this._setState({
+    this.set({
       voices
     });
   }
@@ -267,4 +263,8 @@ function map(value, inMin, inMax, outMin, outMax) {
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+function random(min, max) {
+  return Math.floor((Math.random() * (max - min)) * 10) / 10 + min
 }

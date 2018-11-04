@@ -18,8 +18,18 @@ Use:
 ```javascript
 import Granular from 'granular-js';
 
-const granular = new Granular();
+// create instance with optional configuration
+const granular = new Granular({
+  envelope: {
+    attack: 0,
+    decay: 0.5
+  },
+  density: 0.9,
+  spread: 0.1,
+  pitch: 1
+});
 
+// listen for events
 granular.on('settingBuffer', () => {
   // ...
 });
@@ -30,6 +40,13 @@ granular.on('bufferSet', () => {
 
 granular.on('grainCreated', ({ gain, position }) => {
   // ...
+});
+
+// set parameters
+granular.set({
+  pitch: {
+    0.5
+  }
 });
 
 const data = await getData('example.wav');

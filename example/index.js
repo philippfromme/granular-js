@@ -19,7 +19,15 @@ async function getData(url) {
 }
 
 async function init() {
-  const granular = new Granular();
+  const granular = new Granular({
+    envelope: {
+      attack: 0,
+      decay: 0.5
+    },
+    density: 0.9,
+    spread: 0.1,
+    pitch: 1
+  });
 
   granular.on('settingBuffer', () => console.log('setting buffer'));
   granular.on('bufferSet', () => console.log('buffer set'));
@@ -38,6 +46,12 @@ async function init() {
       position: 0.1,
       gain: 0.5
     });
+
+    setTimeout(() => {
+      granular.set({
+        pitch: 0.5
+      });
+    }, 500);
 
     setTimeout(() => {
       granular.stopVoice(id);
