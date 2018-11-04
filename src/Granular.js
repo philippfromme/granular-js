@@ -50,8 +50,8 @@ export default class Granular {
     this.gain.connect(audioNode);
   }
 
-  resume() {
-    this.context.resume();
+  disconnect() {
+    this.gain.disconnect();
   }
 
   on(events, listener) {
