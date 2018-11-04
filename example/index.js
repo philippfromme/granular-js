@@ -1,24 +1,7 @@
 import Granular from '../src/Granular';
 
-function createCompressor(context, options = {}) {
-  const {
-    threshold,
-    knee,
-    ratio,
-    attack,
-    release
-  } = options;
-
-  const compressor = context.createDynamicsCompressor();
-
-  compressor.threshold.value = threshold || -24;
-  compressor.knee.value = knee || 6;
-  compressor.ratio.value = ratio || 10;
-  compressor.attack.value = attack || 0.005;
-  compressor.release.value = release || 0.05;
-
-  return compressor;
-}
+import p5 from 'p5';
+import 'p5/lib/addons/p5.sound';
 
 async function getData(url) {
   return new Promise((resolve) => {
@@ -39,7 +22,7 @@ async function getData(url) {
 }
 
 async function init() {
-  const audioContext = new AudioContext();
+  const audioContext = p5.prototype.getAudioContext();
   
   const granular = new Granular({
     audioContext,
@@ -52,11 +35,21 @@ async function init() {
     pitch: 1
   });
 
-  const compressor = createCompressor(audioContext);
+  const delay = new p5.Delay();
 
-  granular.connect(compressor);
+  delay.process(granular, 0.5, 0.5, 3000); // source, delayTime, feedback, filter frequency
 
-  compressor.connect(audioContext.destination);
+  const reverb = new p5.Reverb();
+
+  // due to a bug setting parameters will throw error
+  // https://github.com/processing/p5.js/issues/3090
+  reverb.process(delay); // source, reverbTime, decayRate in %, reverse
+
+  reverb.amp(3);
+
+  const compressor = new p5.Compressor();
+
+  compressor.process(reverb, 0.005, 6, 10, -24, 0.05); // [attack], [knee], [ratio], [threshold], [release]
 
   granular.on('settingBuffer', () => console.log('setting buffer'));
   granular.on('bufferSet', () => console.log('buffer set'));
@@ -90,6 +83,10 @@ async function init() {
       clearInterval(interval);
 
       granular.stopVoice(id);
+
+      granular.set({
+        pitch: 1
+      });
     }, 2000);
   })
 }
