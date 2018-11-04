@@ -1,5 +1,25 @@
 import Granular from '../src/Granular';
 
+function createCompressor(context, options = {}) {
+  const {
+    threshold,
+    knee,
+    ratio,
+    attack,
+    release
+  } = options;
+
+  const compressor = context.createDynamicsCompressor();
+
+  compressor.threshold.value = threshold || -24;
+  compressor.knee.value = knee || 6;
+  compressor.ratio.value = ratio || 10;
+  compressor.attack.value = attack || 0.005;
+  compressor.release.value = release || 0.05;
+
+  return compressor;
+}
+
 async function getData(url) {
   return new Promise((resolve) => {
     const request = new XMLHttpRequest();
@@ -19,7 +39,10 @@ async function getData(url) {
 }
 
 async function init() {
+  const audioContext = new AudioContext();
+  
   const granular = new Granular({
+    audioContext,
     envelope: {
       attack: 0,
       decay: 0.5
@@ -28,6 +51,12 @@ async function init() {
     spread: 0.1,
     pitch: 1
   });
+
+  const compressor = createCompressor(audioContext);
+
+  granular.connect(compressor);
+
+  compressor.connect(audioContext.destination);
 
   granular.on('settingBuffer', () => console.log('setting buffer'));
   granular.on('bufferSet', () => console.log('buffer set'));
@@ -47,15 +76,21 @@ async function init() {
       gain: 0.5
     });
 
-    setTimeout(() => {
+    let pitch = 1;
+
+    const interval = setInterval(() => {
+      pitch -= 0.05;
+
       granular.set({
-        pitch: 0.5
+        pitch
       });
-    }, 500);
+    }, 200);
 
     setTimeout(() => {
+      clearInterval(interval);
+
       granular.stopVoice(id);
-    }, 1000);
+    }, 2000);
   })
 }
 
