@@ -62,8 +62,6 @@ async function init() {
   const resume = document.getElementById('resume');
 
   resume.addEventListener('click', () => {
-    granular.resume();
-    
     const id = granular.startVoice({
       position: 0.1,
       gain: 0.5
