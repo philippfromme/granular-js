@@ -76,9 +76,9 @@ export default class Granular {
     return new Promise(resolve => {
       this.context.decodeAudioData(data, buffer => {
         this.buffer = buffer;
-  
+
         this.set({ isBufferSet: true });
-  
+
         this.events.fire('bufferSet', {
           buffer
         });
@@ -93,7 +93,7 @@ export default class Granular {
   }
 
   /**
-   * 
+   *
    * @param {Object} options - Options.
    * @param {Object} [options.id] - Optional ID.
    * @param {Object} [options.volume] - Optional volume (0.0 - 1.0).
@@ -122,7 +122,7 @@ export default class Granular {
         if (options.position) {
           this.position = options.position;
         }
-        
+
         if (options.volume) {
           this.volume = options.volume;
         }
@@ -257,7 +257,8 @@ export default class Granular {
 
     this.events.fire('grainCreated', {
       position,
-      volume
+      volume,
+      pitch: this.state.pitch
     });
   }
 }
