@@ -66,6 +66,10 @@ export default class Granular {
     this.state = merge(this.state, state);
   }
 
+  /**
+   *
+   * @param {*} data
+   */
   setBuffer(data) {
     this.set({ isBufferSet: false });
 
@@ -73,7 +77,23 @@ export default class Granular {
       buffer: data
     });
 
+    if (data instanceof AudioBuffer) {
+
+      // AudioBuffer
+      this.buffer = data;
+
+      this.set({ isBufferSet: true });
+
+      this.events.fire('bufferSet', {
+        buffer: data
+      });
+
+      return;
+    }
+
     return new Promise(resolve => {
+
+      // ArrayBuffer
       this.context.decodeAudioData(data, buffer => {
         this.buffer = buffer;
 
@@ -83,7 +103,7 @@ export default class Granular {
           buffer
         });
 
-        resolve();
+        resolve(buffer);
       });
     });
   }
