@@ -1,8 +1,3 @@
-import {
-  find,
-  merge
-} from 'lodash';
-
 import Events from './Events';
 import Ids from './Ids';
 
@@ -63,7 +58,8 @@ export default class Granular {
   }
 
   set(state) {
-    this.state = merge(this.state, state);
+     // merge states, overwrite with new state
+    this.state = {...this.state, ...state};
   }
 
   /**
@@ -109,7 +105,7 @@ export default class Granular {
   }
 
   getVoice(id) {
-    return find(this.state.voices, voice => voice.id === id);
+    return this.state.voices.find(voice => voice.id === id);
   }
 
   /**
